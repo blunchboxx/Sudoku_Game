@@ -36,7 +36,7 @@ class SudokuGenerator:
                       [0, 0, 0, 0, 0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0, 0, 0, 0, 0]]
-        pass
+
 
     '''
 	Returns a 2D python list of numbers which represents the board
@@ -45,7 +45,8 @@ class SudokuGenerator:
 	Return: list[list]
     '''
     def get_board(self):
-        pass
+        return self.board
+
 
     '''
 	Displays the board to the console
@@ -55,7 +56,10 @@ class SudokuGenerator:
 	Return: None
     '''
     def print_board(self):
-        pass
+
+        for i in range(0, len(self.board)):
+            print(f'{self.board[i]}\n')
+
 
     '''
 	Determines if num is contained in the specified row (horizontal) of the board
@@ -222,3 +226,4 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
+
