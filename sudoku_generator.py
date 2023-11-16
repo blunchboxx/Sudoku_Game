@@ -155,7 +155,13 @@ class SudokuGenerator:
         return False
 
     '''
-    Determines if value has been used in box yet during initial board generation
+    Determines if value has been used in box yet during initial board generation'
+
+    Parameters:
+    row_start and col_start are the indices of the box we are checking
+    value is the number we are checking if it is in the desired row/column location
+
+    Returns: Boolean
     '''
 
     def unused_in_box(self, row_start, col_start, value):
