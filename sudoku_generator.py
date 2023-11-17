@@ -1,4 +1,5 @@
-import math, random
+import math
+import random
 
 """
 This was adapted from a GeeksforGeeks article "Program for Sudoku Generator" by Aarti_Rathi and Ankur Trisal
@@ -8,7 +9,7 @@ https://www.geeksforgeeks.org/program-sudoku-generator/
 
 
 class SudokuGenerator:
-    '''
+    """
     Create a sudoku board - initialize class variables and set up the 2D board
     This should initialize:
     self.row_length		- the length of each row
@@ -22,16 +23,17 @@ class SudokuGenerator:
 
     Return:
     None
-    '''
+    """
 
     def __init__(self, row_length, removed_cells):
         self.row_length = row_length
         self.removed_cells = removed_cells
         self.box_length = int(math.sqrt(self.row_length))
-        self.board = []          #LINES 31-34 NEW 11/15/23 - Corey Cavalli
+        self.board = []          # LINES 31-34 NEW 11/15/23 - Corey Cavalli
         for row in range(9):
             self.board.append([])
-            for column in range(9): self.board[row].append(0)
+            for column in range(9):
+                self.board[row].append(0)
 
     '''
     Returns a 2D python list of numbers which represents the board
@@ -148,8 +150,9 @@ class SudokuGenerator:
         elif 6 <= col < 10:
             col_start = 6
 
+        # Call other valid_in functions and return True if all are True
         if (self.valid_in_row(row, num) == self.valid_in_col(col, num) ==
-                self.valid_in_box(row_start, col_start, num) == True):
+                self.valid_in_box(row_start, col_start, num) is True):
             return True
 
         return False
@@ -166,6 +169,10 @@ class SudokuGenerator:
 
     def unused_in_box(self, row_start, col_start, value):
 
+        """
+        Checks if value passed by fill_box function has been used in the box yet.
+        Checks box based on starting row and column values.
+        """
         for row in range(row_start, row_start + self.box_length):
             for col in range(col_start, col_start + self.box_length):
                 if self.board[row][col] == value:
@@ -186,14 +193,19 @@ class SudokuGenerator:
 
     def fill_box(self, row_start, col_start):
 
+        """
+        Generates random value and checks if it has been used in box yet.
+        If not used yet, square in box is assigned value and next value is generated and checked.
+        If already used in box, another random value is generated until an unused value is found.
+        """
         for row in range(row_start, row_start + self.box_length):
             for col in range(col_start, col_start + self.box_length):
+                next_value = random.randint(1, 9)
+
+                while self.unused_in_box(row_start, col_start, next_value) is False:
                     next_value = random.randint(1, 9)
 
-                    while self.unused_in_box(row_start, col_start, next_value) is False:
-                        next_value = random.randint(1, 9)
-
-                    self.board[row][col] = next_value
+                self.board[row][col] = next_value
 
     '''
     Fills the three boxes along the main diagonal of the board
@@ -276,7 +288,6 @@ class SudokuGenerator:
 
     def remove_cells(self):
 
-        removed_cell_coordinates = []
         removed_count = 0
 
         while removed_count < self.removed_cells:
@@ -284,9 +295,10 @@ class SudokuGenerator:
             rand_col = random.randint(0, 8)
             rand_row = random.randint(0, 8)
 
-            if self.board[rand_row][rand_col] != 0:
+            if self.board[rand_row][rand_col] != 0:  # Checks if cell has already been removed.
                 self.board[rand_row][rand_col] = 0
-                removed_count += 1
+                removed_count += 1  # Only increment removed count if cell can be removed i.e. was not removed before
+
 
 '''
 DO NOT CHANGE
