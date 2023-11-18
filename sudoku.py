@@ -1,5 +1,8 @@
 from sudoku_generator import *
 
+# main()
+# create different screens (game start, game over, and game in-progress)
+
 
 if __name__ == '__main__':
     sudoku_board = SudokuGenerator(9, 30)

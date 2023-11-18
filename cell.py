@@ -1,4 +1,5 @@
 class Cell:
+    pass
 
     def __init__(self, value, row, col, screen):  # Initialize Cell variables
         self.value = value
