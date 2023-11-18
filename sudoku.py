@@ -1,6 +1,6 @@
 from sudoku_generator import *
 
-# main()
+# main() (Tom/Jason).
 # create different screens (game start, game over, and game in-progress)
 
 
