@@ -9,10 +9,12 @@ import sys
 
 if __name__ == '__main__':
     pygame.init()
-    screen = pygame.display.set_mode(WIDTH, HEIGHT)
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Sudoku')
     sudoku_board = SudokuGenerator(9, 30)
     screen.fill(BG_COLOR)
+
+    game_over = False
 
     sudoku_board.fill_diagonal()
     sudoku_board.fill_remaining(0, 0)
