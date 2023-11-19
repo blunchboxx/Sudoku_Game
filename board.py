@@ -1,4 +1,5 @@
 class Board:
+    pass
 
     def __init__(self, width, height, screen, difficulty):
         self.width = width
