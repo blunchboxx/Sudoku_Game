@@ -1,4 +1,5 @@
 from sudoku_generator import *
+import pygame, sys
 
 
 if __name__ == '__main__':
