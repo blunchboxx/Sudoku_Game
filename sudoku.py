@@ -1,6 +1,6 @@
-from sudoku_generator import *
-import pygame
 from constants import *
+from board import *
+import pygame
 import sys
 
 # main() (Tom/Jason).
@@ -8,16 +8,27 @@ import sys
 
 
 if __name__ == '__main__':
+
+    '''
+    Initialize pygame module and screen
+    Set initial variables
+    Generate board and draw it on screen
+    '''
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Sudoku')
-    sudoku_board = SudokuGenerator(9, 30)
     screen.fill(BG_COLOR)
 
     game_over = False
 
-    sudoku_board.fill_diagonal()
-    sudoku_board.fill_remaining(0, 0)
-    sudoku_board.remove_cells()
+    board = Board(9, 9, screen, 30)
+    board.draw()
 
-    sudoku_board.print_board()
+    while True:
+        # event loop
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.update()

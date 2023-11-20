@@ -1,3 +1,11 @@
-WIDTH = 600
-HEIGHT = 600
+WIDTH = 900
+HEIGHT = 900
 BG_COLOR = (255, 255, 245)
+SQUARE_SIZE = WIDTH // 9
+NUM_FONT = 60  # Size of numbers for current screen
+NUM_COLOR = (66, 66, 66)
+BOARD_ROWS = 9
+BOARD_COLS = 9
+LINE_WIDTH = 10  # Normal line width for standard grid lines
+BOX_LINE_WIDTH = 20  # Bold line for boxes
+LINE_COLOR = (66, 66, 66)  # Set all line colors to black
