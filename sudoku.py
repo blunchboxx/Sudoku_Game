@@ -36,27 +36,33 @@ def draw_game_start():
     start_button_font = pygame.font.Font(None, TITLE_BUTTON_FONT)
 
     # Initialize button text
-    easy_button_text = start_button_font.render('Easy', 0, BUTTON_COLOR)
-    med_button_text = start_button_font.render('Medium', 0, BUTTON_COLOR)
-    hard_button_text = start_button_font.render('Hard', 0, BUTTON_COLOR)
+    easy_button_text = start_button_font.render('Easy', 0, BUTTON_TEXT_COLOR)
+    med_button_text = start_button_font.render('Medium', 0, BUTTON_TEXT_COLOR)
+    hard_button_text = start_button_font.render('Hard', 0, BUTTON_TEXT_COLOR)
 
     # Initialize button background color and text
     # Sets size to 20 pixels longer than width of text and 20 pixels taller than start text
     easy_button_surf = pygame.Surface((easy_button_text.get_size()[0] + 20, easy_button_text.get_size()[1] + 20))
-    easy_button_surf.fill(LINE_COLOR)
+    easy_button_surf.fill(BUTTON_BOX_COLOR)
     easy_button_surf.blit(easy_button_text, (10, 10))  # Box is 20 pixels larger so 10,10 is center of box
 
     med_button_surf = pygame.Surface((med_button_text.get_size()[0] + 20, med_button_text.get_size()[1] + 20))
-    med_button_surf.fill(LINE_COLOR)
+    med_button_surf.fill(BUTTON_BOX_COLOR)
     med_button_surf.blit(med_button_text, (10, 10))
+
+    hard_button_surf = pygame.Surface((hard_button_text.get_size()[0] + 20, hard_button_text.get_size()[1] + 20))
+    hard_button_surf.fill(BUTTON_BOX_COLOR)
+    hard_button_surf.blit(hard_button_text, (10, 10))
 
     # Initialize button rectangles/locations
     easy_button_rect = easy_button_surf.get_rect(center=(WIDTH // 2 - 200, HEIGHT // 2 + 150))
     med_button_rect = med_button_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 150))
+    hard_button_rect = hard_button_surf.get_rect(center=(WIDTH // 2 + 200, HEIGHT // 2 + 150))
 
     # Draw buttons
     screen.blit(easy_button_surf, easy_button_rect)
     screen.blit(med_button_surf, med_button_rect)
+    screen.blit(hard_button_surf, hard_button_rect)
 
     while True:
         for event in pygame.event.get():
@@ -64,10 +70,13 @@ def draw_game_start():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:  # FixMe add event to pass difficulty level to board
-                if easy_button_rect.collidepoint(event.pos):  # Checks if user click is on start button
-                    return  # If mouse is on start button, return to main
-                elif med_button_rect.collidepoint(event.pos):  # If mouse on quit button, exit program
-                    return
+                if easy_button_rect.collidepoint(event.pos):  # Checks if user click is on easy button
+                    return 30  # If mouse clicks on easy button, return to main and return value 30
+                elif med_button_rect.collidepoint(event.pos):  # If mouse clicks on medium
+                    return 40  # Return to main() and return value of 40
+                elif hard_button_rect.collidepoint(event.pos):  # If mouse clicks on hard
+                    return 50  # Return to main() and return value of 50
+
         pygame.display.update()
 
 
@@ -82,12 +91,12 @@ if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Sudoku')
-    draw_game_start()
+    difficulty = draw_game_start()
 
     game_over = False
 
     screen.fill(BG_COLOR)
-    board = Board(9, 9, screen, 30)
+    board = Board(9, 9, screen, difficulty)
     board.draw()
 
     while True:
