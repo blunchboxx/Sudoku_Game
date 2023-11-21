@@ -9,22 +9,67 @@ import sys
 
 def draw_game_start():
 
+    screen.fill(BG_COLOR)  # Fill screen
+
+    # Load title screen background image
     start_bg_image = pygame.image.load(START_IMAGE_FILENAME)
+
+    # Set start title fonts and text
     start_title_font = pygame.font.Font(None, START_TITLE_FONT)
     start_title_text = 'Welcome to Sudoku'
 
     start_subtitle_font = pygame.font.Font(None, START_SUBTITLE_FONT)
     start_subtitle_text = 'Select Game Mode:'
 
+    # Set start title surfaces and rectangles
     start_title_surf = start_title_font.render(start_title_text, 0, TITLE_COLOR)
     start_subtitle_surf = start_subtitle_font.render(start_subtitle_text, 0, TITLE_COLOR)
     start_title_rect = start_title_surf.get_rect(center=(WIDTH //2, HEIGHT // 2 - 200))
     start_subtitle_rect = start_subtitle_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 
-    screen.fill(BG_COLOR)
+    # Blit titles to screen
     screen.blit(start_bg_image, (0,0))
     screen.blit(start_title_surf, start_title_rect)
     screen.blit(start_subtitle_surf, start_subtitle_rect)
+
+    # Initialize button font
+    start_button_font = pygame.font.Font(None, TITLE_BUTTON_FONT)
+
+    # Initialize button text
+    easy_button_text = start_button_font.render('Easy', 0, BUTTON_COLOR)
+    med_button_text = start_button_font.render('Medium', 0, BUTTON_COLOR)
+    hard_button_text = start_button_font.render('Hard', 0, BUTTON_COLOR)
+
+    # Initialize button background color and text
+    # Sets size to 20 pixels longer than width of text and 20 pixels taller than start text
+    easy_button_surf = pygame.Surface((easy_button_text.get_size()[0] + 20, easy_button_text.get_size()[1] + 20))
+    easy_button_surf.fill(LINE_COLOR)
+    easy_button_surf.blit(easy_button_text, (10, 10))  # Box is 20 pixels larger so 10,10 is center of box
+
+    med_button_surf = pygame.Surface((med_button_text.get_size()[0] + 20, med_button_text.get_size()[1] + 20))
+    med_button_surf.fill(LINE_COLOR)
+    med_button_surf.blit(med_button_text, (10, 10))
+
+    # Initialize button rectangles/locations
+    easy_button_rect = easy_button_surf.get_rect(center=(WIDTH // 2 - 200, HEIGHT // 2 + 150))
+    med_button_rect = med_button_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 150))
+
+    # Draw buttons
+    screen.blit(easy_button_surf, easy_button_rect)
+    screen.blit(med_button_surf, med_button_rect)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:  # FixMe add event to pass difficulty level to board
+                if easy_button_rect.collidepoint(event.pos):  # Checks if user click is on start button
+                    return  # If mouse is on start button, return to main
+                elif med_button_rect.collidepoint(event.pos):  # If mouse on quit button, exit program
+                    return
+        pygame.display.update()
+
 
 
 if __name__ == '__main__':
@@ -41,8 +86,9 @@ if __name__ == '__main__':
 
     game_over = False
 
-    # board = Board(9, 9, screen, 30)
-    # board.draw()
+    screen.fill(BG_COLOR)
+    board = Board(9, 9, screen, 30)
+    board.draw()
 
     while True:
         # event loop
