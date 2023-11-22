@@ -66,10 +66,10 @@ def draw_game_start():
 
     while True:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT:  # If user clicks 'X' button, quit game
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:  # FixMe add event to pass difficulty level to board
+            if event.type == pygame.MOUSEBUTTONDOWN:  # Check for user mouse click
                 if easy_button_rect.collidepoint(event.pos):  # Checks if user click is on easy button
                     return 30  # If mouse clicks on easy button, return to main and return value 30
                 elif med_button_rect.collidepoint(event.pos):  # If mouse clicks on medium
@@ -79,7 +79,38 @@ def draw_game_start():
 
         pygame.display.update()
 
+def game_buttons_draw():
+    # Initialize button font
+    game_button_font = pygame.font.Font(None, GAME_BUTTON_FONT)
 
+    # Initialize button text
+    reset_button_text = game_button_font.render('RESET', 0, BUTTON_TEXT_COLOR)
+    restart_button_text = game_button_font.render('RESTART', 0, BUTTON_TEXT_COLOR)
+    exit_button_text = game_button_font.render('EXIT', 0, BUTTON_TEXT_COLOR)
+
+    # Initialize button background color and text
+    # Sets size to 20 pixels longer than width of text and 20 pixels taller than start text
+    reset_button_surf = pygame.Surface((reset_button_text.get_size()[0] + 20, reset_button_text.get_size()[1] + 20))
+    reset_button_surf.fill(BUTTON_BOX_COLOR)
+    reset_button_surf.blit(reset_button_text, (10, 10))  # Box is 20 pixels larger so 10,10 is center of box
+
+    restart_button_surf = pygame.Surface((restart_button_text.get_size()[0] + 20, restart_button_text.get_size()[1] + 20))
+    restart_button_surf.fill(BUTTON_BOX_COLOR)
+    restart_button_surf.blit(restart_button_text, (10, 10))
+
+    exit_button_surf = pygame.Surface((exit_button_text.get_size()[0] + 20, exit_button_text.get_size()[1] + 20))
+    exit_button_surf.fill(BUTTON_BOX_COLOR)
+    exit_button_surf.blit(exit_button_text, (10, 10))
+
+    # Initialize button rectangles/locations
+    reset_button_rect = reset_button_surf.get_rect(center=(WIDTH // 2 - 150, HEIGHT + 40))
+    restart_button_rect = restart_button_surf.get_rect(center=(WIDTH // 2, HEIGHT + 40))
+    exit_button_rect = exit_button_surf.get_rect(center=(WIDTH // 2 + 150, HEIGHT + 40))
+
+    # Draw buttons
+    screen.blit(reset_button_surf, reset_button_rect)
+    screen.blit(restart_button_surf, restart_button_rect)
+    screen.blit(exit_button_surf, exit_button_rect)
 
 if __name__ == '__main__':
 
@@ -89,13 +120,14 @@ if __name__ == '__main__':
     Generate board and draw it on screen
     '''
     pygame.init()
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT + 80))
     pygame.display.set_caption('Sudoku')
     difficulty = draw_game_start()
 
     game_over = False
 
     screen.fill(BG_COLOR)
+    game_buttons_draw()
     board = Board(9, 9, screen, difficulty)
     board.draw()
 
@@ -106,10 +138,20 @@ if __name__ == '__main__':
                 pygame.quit()
                 sys.exit()
 
-        pygame.display.update()
+            if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
+                x, y = event.pos
+                location = board.click(x, y)
+                print(location)
 
-    # sudoku_board.fill_diagonal()
-    # sudoku_board.fill_remaining(0, 0)
-    # sudoku_board.remove_cells()
+                if location is not None:
+                    board.select(location[0], location[1])
 
-    # sudoku_board.print_board()
+
+            if game_over:
+                pygame.display.update()
+                pygame.time.delay(1000)
+                draw_game_over()
+
+            pygame.display.update()
+
+    # game_over_font = pygame.font.Font(None, GAME_OVER_FONT)  # Set up end message font
