@@ -69,10 +69,10 @@ class Board:
     def clear(self):
         #check if cell was empty at game start
         # Update once cell is complete to set_cell_value(0) (cell class)
-#        if self.board_removed_test[self.cell[0]][self.cell[1]] != 0:    #check if cell was filled in at game start
+#        if self.board_removed_test[self.selected_cell[0]][self.selected_cell[1]] != 0:    #check if cell was filled in at game start
 #            print("Cannot clear cell")
 #        else:
-#            self.board_active_test[self.cell[0]][self.cell[1]] = 0
+#            self.board_active_test[self.selected_cell[0]][self.selected_cell[1]] = 0
         pass
 
     def sketch(self, value):
@@ -81,12 +81,14 @@ class Board:
 
     def place_number(self, value):
         # Update once proper board list is written: set_cell_value(value) (cell class)
-#        self.board_active_test[self.cell[0]][self.cell[1]] = value
+#        self.board_active_test[self.selected_cell[0]][self.selected_cell[1]] = value
+
 
         #do we need to check if the cell was empty (0) at game start?
         pass
 
     def reset_to_original(self):
+        # Update once proper board list is written
         # for loop that goes through original 2-d array and assigns corresponding values
 #        for row in range(9):
 #            for column in range(9):
@@ -95,6 +97,7 @@ class Board:
 
     def is_full(self):
         #for loop that steps through 2-d array and checks for 0's
+        # Update once proper board list is written
 #        for row in range(9):
 #            for column in range(9):
 #                if self.board_active_test[row][column] == 0:
