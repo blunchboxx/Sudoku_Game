@@ -143,7 +143,7 @@ if __name__ == '__main__':
                 location = board.click(x, y)
                 print(location)
 
-                if location is not None:
+                if location is not None: # What is the purpose for this? - Tom
                     board.select(location[0], location[1])
 
 

@@ -1,17 +1,18 @@
 class Cell:
-    pass
 
     def __init__(self, value, row, col, screen):  # Initialize Cell variables
         self.value = value
         self.row = row
         self.col = col
         self.screen = screen
+        self.sketched_value = 0 # initialized value for the player while determining a solution. (Tom)
+        self.selected = False # to help track if the cell has been selected yet (Tom)
 
     def set_cell_value(self, value):  # Setter for cell value
         self.value = value
 
     def set_sketched_value(self, value):  # Setter for cell's sketched value
-        pass
+        self.sketched_value = value
 
     def draw(self):  # Draws cell with value inside it
 
