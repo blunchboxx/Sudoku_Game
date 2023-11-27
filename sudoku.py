@@ -71,11 +71,11 @@ def draw_game_start():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:  # Check for user mouse click
                 if easy_button_rect.collidepoint(event.pos):  # Checks if user click is on easy button
-                    return 30  # If mouse clicks on easy button, return to main and return value 30
+                    return 1  # If mouse clicks on easy button, return to main and return difficulty 1
                 elif med_button_rect.collidepoint(event.pos):  # If mouse clicks on medium
-                    return 40  # Return to main() and return value of 40
+                    return 2  # Return to main() and return value of 2
                 elif hard_button_rect.collidepoint(event.pos):  # If mouse clicks on hard
-                    return 50  # Return to main() and return value of 50
+                    return 3  # Return to main() and return value of 3
 
         pygame.display.update()
 
@@ -90,15 +90,18 @@ def game_buttons_draw():
 
     # Initialize button background color and text
     # Sets size to 20 pixels longer than width of text and 20 pixels taller than start text
-    reset_button_surf = pygame.Surface((reset_button_text.get_size()[0] + 20, reset_button_text.get_size()[1] + 20))
+    reset_button_surf = pygame.Surface((reset_button_text.get_size()[0] + 20,
+                                        reset_button_text.get_size()[1] + 20))
     reset_button_surf.fill(BUTTON_BOX_COLOR)
     reset_button_surf.blit(reset_button_text, (10, 10))  # Box is 20 pixels larger so 10,10 is center of box
 
-    restart_button_surf = pygame.Surface((restart_button_text.get_size()[0] + 20, restart_button_text.get_size()[1] + 20))
+    restart_button_surf = pygame.Surface((restart_button_text.get_size()[0] + 20,
+                                          restart_button_text.get_size()[1] + 20))
     restart_button_surf.fill(BUTTON_BOX_COLOR)
     restart_button_surf.blit(restart_button_text, (10, 10))
 
-    exit_button_surf = pygame.Surface((exit_button_text.get_size()[0] + 20, exit_button_text.get_size()[1] + 20))
+    exit_button_surf = pygame.Surface((exit_button_text.get_size()[0] + 20,
+                                       exit_button_text.get_size()[1] + 20))
     exit_button_surf.fill(BUTTON_BOX_COLOR)
     exit_button_surf.blit(exit_button_text, (10, 10))
 
@@ -111,6 +114,8 @@ def game_buttons_draw():
     screen.blit(reset_button_surf, reset_button_rect)
     screen.blit(restart_button_surf, restart_button_rect)
     screen.blit(exit_button_surf, exit_button_rect)
+
+    return [reset_button_rect, restart_button_rect, exit_button_rect]
 
 if __name__ == '__main__':
 
@@ -125,26 +130,53 @@ if __name__ == '__main__':
     difficulty = draw_game_start()
 
     game_over = False
+    cell_selected = False
 
     screen.fill(BG_COLOR)
-    game_buttons_draw()
-    board = Board(9, 9, screen, difficulty)
-    board.draw()
+    starting_board = Board(9, 9, screen, difficulty) # Initialize starting board
+    sketched_board = starting_board  # Initialize board to be updated by player
+    sketched_board.draw()  # Draw board on screen
+    button_locations = game_buttons_draw()  # Draw reset, restart & exit buttons and save locations
 
     while True:
         # event loop
-        for event in pygame.event.get():
+        for event in pygame.event.get():  # Check if window is closed by user and exit program
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-            if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
-                x, y = event.pos
-                location = board.click(x, y)
-                print(location)
+            if event.type == pygame.MOUSEBUTTONDOWN and not game_over:  # Check for mouse click
+                x, y = event.pos  # Store mouse click location as x & y coordinates
+                location = sketched_board.click(x, y)  # Pass click location to Board class 'click' function
 
-                if location is not None: # What is the purpose for this? - Tom
-                    board.select(location[0], location[1])
+                if location is not None:
+
+                    if (location[0] > 8) or (location[1] > 8):
+                        if button_locations[0].collidepoint(event.pos):
+                            screen.fill(BG_COLOR)
+                            sketched_board = starting_board
+                            sketched_board.draw()
+                            game_buttons_draw()
+                        elif button_locations[1].collidepoint(event.pos):
+                            screen.fill(BG_COLOR)
+                            difficulty = draw_game_start()
+                            screen.fill(BG_COLOR)
+                            game_buttons_draw()
+                            break
+                        elif button_locations[2].collidepoint(event.pos):
+                            pygame.quit()
+                            sys.exit()
+
+                    else:
+                        cell_selected = True
+
+                        selected_cell = sketched_board.select(location[0], location[1])
+
+            if cell_selected == True and event.type == pygame.KEYDOWN:
+                if 49 <= event.key <= 57:
+                    sketched_board.sketch(selected_cell, event.key)
+
+            # ToDo add game over functions when ready
 
 
             if game_over:

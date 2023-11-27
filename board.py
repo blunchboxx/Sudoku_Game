@@ -30,7 +30,7 @@ class Board:
         self.generated_board = self.s.get_board() #get the starting board configuration
         for row in range(BOARD_ROWS):   #populate list of cell objects
             for column in range(BOARD_COLS):
-                self.active_board.append(Cell(self.generated_board[row][column], row, column,"pass"))
+                self.active_board.append(Cell(self.generated_board[row][column], row, column,'pass'))
                 # FIX ME: need to figure out what to put in "screen" attribute
 
     def draw(self): # draws the grids for the game (Tom)

@@ -16,11 +16,22 @@ class Cell:
 
     def draw(self):  # Draws cell with value inside it
 
-        if self.value == 0:  # If cell value is zero, display nothing inside cell
-            # FixMe: Define empty displayed cell if value is still zero
-            pass
-        elif self.value > 0:
-            # FixMe: Draw cell and current value
-            pass
+        value_font = pygame.font.Font(None, NUM_FONT)  # Set font of number to be displayed
 
-        pass
+        # Set surface for values to display value character in NUM_COLOR (black)
+        value_surf = value_font.render(str(self.value), 0, NUM_COLOR)
+
+        # Set surface for empty squares to empty string and fill square with background color
+        zero_surf = value_font.render('', 0, BG_COLOR)
+
+        if self.value == 0:  # If cell value is zero, display nothing inside cell
+            zero_rect = zero_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
+                                                   self.row * SQUARE_SIZE + SQUARE_SIZE // 2))
+            screen.blit(zero_surf, zero_rect)
+
+        elif self.value > 0:  # If cell has a non-zero value, display it in the board
+
+            value_rect = value_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
+                                                     self.row * SQUARE_SIZE + SQUARE_SIZE // 2))
+
+            screen.blit(value_surf, value_rect)
