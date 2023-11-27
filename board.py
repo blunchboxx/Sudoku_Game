@@ -1,5 +1,7 @@
 from constants import *
 import pygame, sys
+from sudoku_generator import SudokuGenerator
+from cell import Cell
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 class Board:
@@ -11,6 +13,25 @@ class Board:
         self.screen = screen
         self.difficulty = difficulty
         self.selected_cell = None # used in select function (Tom)
+
+    def set_board(self): #new method to call SudokuGenerator
+        self.removed_cells = 0 #holds int of # cells removed from solved board
+        self.active_board = []  #holds a list of cell objects
+        self.solved_board = []  #holds the solved board for comparison purposes # FIX ME
+        if self.difficulty == 1: self.removed_cells = 30    #conditional to set removed cells
+        elif self.difficulty == 2: self.removed_cells = 40
+        elif self.difficulty == 3: self.removed_cells = 50
+        self.s = SudokuGenerator(BOARD_ROWS, self.removed_cells)    #generate board
+        self.s.fill_values()
+        for index in range(len(self.s.board)):
+            self.solved_board.append(self.s.board[index]) #FIX ME: this definition is overwritten by remove_cells()
+        print(self.solved_board)
+        self.s.remove_cells()
+        self.generated_board = self.s.get_board() #get the starting board configuration
+        for row in range(BOARD_ROWS):   #populate list of cell objects
+            for column in range(BOARD_COLS):
+                self.active_board.append(Cell(self.generated_board[row][column], row, column,"pass"))
+                # FIX ME: need to figure out what to put in "screen" attribute
 
     def draw(self): # draws the grids for the game (Tom)
         # draw horizontal lines
@@ -67,61 +88,56 @@ class Board:
         # self.cell = (x, y) # temporary attribute (corey 11/22) - removed/edited (Tom)
 
     def clear(self):
-        #check if cell was empty at game start
-        # Update once cell is complete to set_cell_value(0) (cell class)
-#        if self.board_removed_test[self.selected_cell[0]][self.selected_cell[1]] != 0:    #check if cell was filled in at game start
-#            print("Cannot clear cell")
-#        else:
-#            self.board_active_test[self.selected_cell[0]][self.selected_cell[1]] = 0
-        pass
+        #check if cell was filled in at game start
+        if self.generated_board[self.selected_cell[0]][self.selected_cell[1]] != 0:
+            print("Cannot clear cell")
+        else:   #update cell object at selected cell (object with matching row and column)
+            for cells in self.active_board:
+                if(cells.row == self.selected_cell[0] and cells.col == self.selected_cell[1]):
+                    cells.set_cell_value(0)
 
     def sketch(self, value):
-        # update once draw() is finished
-        pass
+        #update cell object at selected cell (object with matching row and column)
+        for cells in self.active_board:
+            if (cells.row == self.selected_cell[0] and cells.col == self.selected_cell[1]):
+                cells.set_sketched_value(value)
 
     def place_number(self, value):
-        # Update once proper board list is written: set_cell_value(value) (cell class)
-#        self.board_active_test[self.selected_cell[0]][self.selected_cell[1]] = value
-
+        for cells in self.active_board:
+            if (cells.row == self.selected_cell[0] and cells.col == self.selected_cell[1]):
+                cells.set_cell_value(value)
 
         #do we need to check if the cell was empty (0) at game start?
-        pass
 
     def reset_to_original(self):
-        # Update once proper board list is written
-        # for loop that goes through original 2-d array and assigns corresponding values
-#        for row in range(9):
-#            for column in range(9):
-#                self.board_active_test[row][column] = self.board_removed_test[row][column]
-        pass
+        #loop through initial board and set active board to equal values in cell class
+        for row in range(9):
+            for column in range(9):
+                for cells in self.active_board:
+                    if (cells.row == row and cells.col == column):
+                        cells.set_cell_value(self.generated_board[row][column])
 
     def is_full(self):
-        #for loop that steps through 2-d array and checks for 0's
-        # Update once proper board list is written
-#        for row in range(9):
-#            for column in range(9):
-#                if self.board_active_test[row][column] == 0:
-#                    return False
-#        return True
-        pass
+        #look for any 0 in cell.value
+        for cells in self.active_board:
+            if cells.value == 0:
+                return False
+        return True
 
-    def update_board(self):
+    def update_board(self): #Unsure what this method is supposed to be doing
         pass
 
     def find_empty(self):
-        # for loop through current aray and looks for 0
-        #        for row in range(9):
-        #            for column in range(9):
-        #                if self.board_active_test[row][
-        #                    column] == 0:  # update with proper board list. Only find first empty cell?
-        #                    return (row, column)  # do we want to index from 0 on row and column
-        pass
+        #loop through cell.value and find the first 0 and return its coordinates
+        for cells in self.active_board:
+            if(cells.value == 0):
+                return (cells.row, cells.col)
 
-    def check_board(self):
-        # for loop that compares each element to corresponding element in solution 2-d array
-#       for row in range(9):
-#           for column in range(9):
-#               if self.board_active_test[row][column] != self.board_full_test[row][column]:
-#                   return False
-#       return True
-        pass
+    def check_board(self): #FIX ME: need to fine way to store "solved puzzle" for comparison purposes
+        #loop through cell.value and compare to the "solution"
+        for row in range(9):
+            for column in range(9):
+                for cells in self.active_board:
+                    if(cells.row == row and cells.col == column and cells.value != self.solved_board[row][column]):
+                        return False
+        return True
