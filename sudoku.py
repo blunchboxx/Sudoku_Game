@@ -147,6 +147,7 @@ if __name__ == '__main__':
 
             if event.type == pygame.MOUSEBUTTONDOWN and not game_over:  # Check for mouse click
                 x, y = event.pos  # Store mouse click location as x & y coordinates
+                print(x, y)
                 location = sketched_board.click(x, y)  # Pass click location to Board class 'click' function
 
                 if location is not None:

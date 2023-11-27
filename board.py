@@ -3,7 +3,7 @@ import pygame, sys
 from sudoku_generator import SudokuGenerator
 from cell import Cell
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+# screen = pygame.display.set_mode((WIDTH, HEIGHT))
 class Board:
 
 
@@ -13,6 +13,7 @@ class Board:
         self.screen = screen
         self.difficulty = difficulty
         self.selected_cell = None # used in select function (Tom)
+        self.board = self.set_board()
 
     def set_board(self): #new method to call SudokuGenerator
         self.removed_cells = 0 #holds int of # cells removed from solved board
@@ -30,15 +31,16 @@ class Board:
         self.generated_board = self.s.get_board() #get the starting board configuration
         for row in range(BOARD_ROWS):   #populate list of cell objects
             for column in range(BOARD_COLS):
-                self.active_board.append(Cell(self.generated_board[row][column], row, column,'pass'))
+                self.active_board.append(Cell(self.generated_board[row][column], row, column,self.screen))
                 # FIX ME: need to figure out what to put in "screen" attribute
+        return self.generated_board
 
     def draw(self): # draws the grids for the game (Tom)
         # draw horizontal lines
         for i in range(0, BOARD_ROWS + 1): # allows a line to be drawn to outline the board (Tom)
             if i % 3 == 0:
                 pygame.draw.line(
-                    screen,
+                    self.screen,
                     LINE_COLOR,
                     (0, i * SQUARE_SIZE),
                     (WIDTH, i * SQUARE_SIZE), # Made the WIDTH divisible by 9 (693) under constants for a nicer looking board
@@ -46,7 +48,7 @@ class Board:
                 )
             else:
                 pygame.draw.line(
-                    screen,
+                    self.screen,
                     LINE_COLOR,
                     (0, i * SQUARE_SIZE),
                     (WIDTH, i * SQUARE_SIZE),
@@ -56,7 +58,7 @@ class Board:
         for i in range(0, BOARD_COLS + 1):
             if i % 3 == 0:
                 pygame.draw.line(
-                    screen,
+                    self.screen,
                     LINE_COLOR,
                     (i * SQUARE_SIZE, 0),
                     (i * SQUARE_SIZE, HEIGHT), # Made the HEIGHT divisible by 9 (693) under constants for a nicer looking board
@@ -64,7 +66,7 @@ class Board:
             )
             else:
                 pygame.draw.line(
-                    screen,
+                    self.screen,
                     LINE_COLOR,
                     (i * SQUARE_SIZE, 0),
                     (i * SQUARE_SIZE, HEIGHT),
@@ -81,7 +83,14 @@ class Board:
         col = x // SQUARE_SIZE # instead of a value from 0 - 693, it gives you 0-9
 
         if 0 <= row < BOARD_ROWS and 0 <= col < BOARD_ROWS: # if the value is within the board paramenters
-            return (row, col) # returns the coordinates
+            pygame.display.update()
+            return tuple([row, col]) # returns the coordinates
+        # Check if location of click is in button area
+        elif (0 <= x <= WIDTH - 10) and (HEIGHT <= y <= HEIGHT + 80):
+            location = (x, y)
+
+            pygame.display.update()
+            return location  # Return button area click location to check which button was clicked
         else: # if outside the values
             return None # returns None
 
