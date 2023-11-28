@@ -38,7 +38,7 @@ class Board:
         # for row in range(BOARD_ROWS):   #populate list of cell objects
         #    for column in range(BOARD_COLS):
         #        self.active_board.append(Cell(self.generated_board[row][column], row, column,self.screen))
-                # FIX ME: need to figure out what to put in "screen" attribute
+
         return self.active_board
 
     def draw(self): # draws the grids for the game (Tom)
@@ -130,8 +130,8 @@ class Board:
 
     def reset_to_original(self):
         #loop through initial board and set active board to equal values in cell class
-        for row in range(9):
-            for column in range(9):
+        for row in range(BOARD_ROWS):
+            for column in range(BOARD_COLS):
                 for cells in self.active_board:
                     if (cells.row == row and cells.col == column):
                         cells.set_cell_value(self.generated_board[row][column])
@@ -154,8 +154,8 @@ class Board:
 
     def check_board(self): #FIX ME: need to fine way to store "solved puzzle" for comparison purposes
         #loop through cell.value and compare to the "solution"
-        for row in range(9):
-            for column in range(9):
+        for row in range(BOARD_ROWS):
+            for column in range(BOARD_COLS):
                 for cells in self.active_board:
                     if(cells.row == row and cells.col == column and cells.value != self.solved_board[row][column]):
                         return False
