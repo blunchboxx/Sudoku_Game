@@ -13,8 +13,34 @@ class Cell:
     def set_cell_value(self, value):  # Setter for cell value
         self.value = value
 
-    def set_sketched_value(self, value):  # Setter for cell's sketched value
-        self.sketched_value = value
+    def set_sketched_value(self, key):  # Setter for cell's sketched value
+        value_font = pygame.font.Font(None, NUM_FONT)
+
+        if key == 49:
+            value = 1
+        elif key == 50:
+            value = 2
+        elif key == 51:
+            value = 3
+        elif key == 52:
+            value = 4
+        elif key == 53:
+            value = 5
+        elif key == 54:
+            value = 6
+        elif key == 55:
+            value = 7
+        elif key == 56:
+            value = 8
+        elif key == 58:
+            value = 9
+
+        value_surf = value_font.render(str(value), 0, SKETCHED_VALUE_COLOR)
+
+        value_rect = value_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
+                                                     self.row * SQUARE_SIZE + SQUARE_SIZE // 2))
+
+        self.screen.blit(value_surf, value_rect)
 
     def draw(self, screen):  # Draws cell with value inside it
 
