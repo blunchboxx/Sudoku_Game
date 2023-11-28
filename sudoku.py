@@ -159,10 +159,16 @@ if __name__ == '__main__':
                             sketched_board.draw()
                             game_buttons_draw()
                         elif button_locations[1].collidepoint(event.pos):
-                            screen.fill(BG_COLOR)
                             difficulty = draw_game_start()
+
+                            game_over = False
+                            cell_selected = False
+
                             screen.fill(BG_COLOR)
-                            game_buttons_draw()
+                            starting_board = Board(9, 9, screen, difficulty)  # Initialize starting board
+                            sketched_board = starting_board  # Initialize board to be updated by player
+                            sketched_board.draw()  # Draw board on screen
+                            button_locations = game_buttons_draw()  # Draw reset, restart & exit buttons and save locations
                             break
                         elif button_locations[2].collidepoint(event.pos):
                             pygame.quit()
