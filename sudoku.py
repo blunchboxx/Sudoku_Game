@@ -152,13 +152,15 @@ if __name__ == '__main__':
 
                 if location is not None:
 
-                    if (location[0] > 8) or (location[1] > 8):
-                        if button_locations[0].collidepoint(event.pos):
+                    if (location[0] > 8) or (location[1] > 8):  # If click location outside game board
+                        if button_locations[0].collidepoint(event.pos):  # If click location is on reset button
+
+                            sketched_board.reset_to_original()
                             screen.fill(BG_COLOR)
-                            sketched_board = starting_board
                             sketched_board.draw()
                             game_buttons_draw()
-                        elif button_locations[1].collidepoint(event.pos):
+
+                        elif button_locations[1].collidepoint(event.pos):  # If click location is on restart button
                             difficulty = draw_game_start()
 
                             game_over = False
@@ -170,18 +172,26 @@ if __name__ == '__main__':
                             sketched_board.draw()  # Draw board on screen
                             button_locations = game_buttons_draw()  # Draw reset, restart & exit buttons and save locations
                             break
-                        elif button_locations[2].collidepoint(event.pos):
+                        elif button_locations[2].collidepoint(event.pos):  # If click is on exit button
                             pygame.quit()
                             sys.exit()
 
-                    else:
+                    else:  # If click is inside board, select cell
                         cell_selected = True
 
                         selected_cell = sketched_board.select(location[0], location[1])
 
-            if cell_selected == True and event.type == pygame.KEYDOWN:
+            if cell_selected is True and event.type == pygame.KEYDOWN:
                 if 49 <= event.key <= 57:
-                    sketched_board.sketch(selected_cell, event.key)
+                    sketched_value = sketched_board.sketch(selected_cell, event.key)
+                elif event.key == 13:  # Sets cell value after pressing enter
+                    # FIXME need to fix it so that sketched cells stay orange after subsequent entries
+                    # FIXME need way to track player input cells vs original cells
+                    # FIXME and way to clear cell after entry and add new entry
+                    screen.fill(BG_COLOR)
+                    sketched_board.draw()
+                    button_locations = game_buttons_draw()
+                    sketched_board.place_number(selected_cell, sketched_value)
 
             # ToDo add game over functions when ready
 

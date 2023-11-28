@@ -113,7 +113,8 @@ class Board:
 
     def sketch(self, cell, value):  #Updated sketch function to see if it works - Jason
         if self.editable_cell(cell.row, cell.col):
-            cell.set_sketched_value(value)
+            sketched_value = cell.set_sketched_value(value)
+            return sketched_value
         '''
         #update cell object at selected cell (object with matching row and column)
         for cells in self.active_board:
@@ -121,20 +122,17 @@ class Board:
                 cells.set_sketched_value(value)
         '''
 
-    def place_number(self, value):
-        for cells in self.active_board:
-            if (cells.row == self.selected_cell[0] and cells.col == self.selected_cell[1]):
-                cells.set_cell_value(value)
+    def place_number(self, cell, value):  # Updated to call cell new cell.enter_value function - Jason
+        cell.set_cell_value(value)
+        cell.enter_value(cell.value)
 
         #do we need to check if the cell was empty (0) at game start?
+        # Possibly - we can use editable_cell to check. - Jason
+        # But if main function limits placing number to after sketching, we already check for validity at sketching
 
     def reset_to_original(self):
-        #loop through initial board and set active board to equal values in cell class
-        for row in range(BOARD_ROWS):
-            for column in range(BOARD_COLS):
-                for cells in self.active_board:
-                    if (cells.row == row and cells.col == column):
-                        cells.set_cell_value(self.generated_board[row][column])
+        self.sketched_cells = self.starting_cells  # Set player updated cells to equal starting cells
+        self.starting_board = self.generated_board  # Set player updated board equal to initial board
 
     def is_full(self):
         #look for any 0 in cell.value

@@ -16,7 +16,7 @@ class Cell:
     def set_sketched_value(self, key):  # Setter for cell's sketched value
         value_font = pygame.font.Font(None, NUM_FONT)
 
-        if key == 49:
+        if key == 49:  # Reads ASCII key number and determines numeric value
             value = 1
         elif key == 50:
             value = 2
@@ -39,6 +39,17 @@ class Cell:
 
         value_rect = value_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 4,
                                                      self.row * SQUARE_SIZE + SQUARE_SIZE // 3))
+
+        self.screen.blit(value_surf, value_rect)
+        return value
+
+    def enter_value(self, value):  # Draws cell value after user sketches and hits enter
+        value_font = pygame.font.Font(None, NUM_FONT)
+
+        value_surf = value_font.render(str(value), 0, SKETCHED_VALUE_COLOR)
+
+        value_rect = value_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
+                                                     self.row * SQUARE_SIZE + SQUARE_SIZE // 2))
 
         self.screen.blit(value_surf, value_rect)
 
