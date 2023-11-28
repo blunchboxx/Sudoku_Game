@@ -80,6 +80,10 @@ class Board:
                     LINE_WIDTH
                 )
 
+        for i in range(BOARD_COLS):
+            for j in range(BOARD_ROWS):
+                self.initial_cells[i][j].draw(self.screen)
+
     def select(self, row, col): # used for marking the cell on the board at the selected cell (Tom)
         self.selected_cell = (row, col)
 

@@ -1,3 +1,5 @@
+import pygame
+from constants import *
 class Cell:
 
     def __init__(self, value, row, col, screen):  # Initialize Cell variables
@@ -14,7 +16,7 @@ class Cell:
     def set_sketched_value(self, value):  # Setter for cell's sketched value
         self.sketched_value = value
 
-    def draw(self):  # Draws cell with value inside it
+    def draw(self, screen):  # Draws cell with value inside it
 
         value_font = pygame.font.Font(None, NUM_FONT)  # Set font of number to be displayed
 
