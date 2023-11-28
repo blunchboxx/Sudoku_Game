@@ -37,8 +37,8 @@ class Cell:
 
         value_surf = value_font.render(str(value), 0, SKETCHED_VALUE_COLOR)
 
-        value_rect = value_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
-                                                     self.row * SQUARE_SIZE + SQUARE_SIZE // 2))
+        value_rect = value_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 4,
+                                                     self.row * SQUARE_SIZE + SQUARE_SIZE // 3))
 
         self.screen.blit(value_surf, value_rect)
 

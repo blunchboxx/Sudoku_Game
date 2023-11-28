@@ -71,11 +71,11 @@ def draw_game_start():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:  # Check for user mouse click
                 if easy_button_rect.collidepoint(event.pos):  # Checks if user click is on easy button
-                    return 1  # If mouse clicks on easy button, return to main and return difficulty 1
+                    return 30  # If mouse clicks on easy button, return 30 cells to remove
                 elif med_button_rect.collidepoint(event.pos):  # If mouse clicks on medium
-                    return 2  # Return to main() and return value of 2
+                    return 40  # Return to main() and return value of 40 cells to remove
                 elif hard_button_rect.collidepoint(event.pos):  # If mouse clicks on hard
-                    return 3  # Return to main() and return value of 3
+                    return 50  # Return to main() and return value of 50 cells to remove
 
         pygame.display.update()
 
