@@ -14,6 +14,10 @@ class Board:
         self.difficulty = difficulty
         self.selected_cell = None # used in select function (Tom)
         self.board = self.set_board()
+        self.initial_cells = [
+            [Cell(self.board[i][j], i, j, self.screen) for j in range(BOARD_COLS)]
+            for i in range(BOARD_ROWS)
+        ]
 
     def set_board(self): #new method to call SudokuGenerator
         self.removed_cells = 0 #holds int of # cells removed from solved board
@@ -24,16 +28,18 @@ class Board:
         elif self.difficulty == 3: self.removed_cells = 50
         self.s = SudokuGenerator(BOARD_ROWS, self.removed_cells)    #generate board
         self.s.fill_values()
-        for index in range(len(self.s.board)):
-            self.solved_board.append(self.s.board[index]) #FIX ME: this definition is overwritten by remove_cells()
+        self.solved_board = self.s.get_board()
+        # for index in range(len(self.s.board)):
+            # self.solved_board.append(self.s.board[index]) #FIX ME: this definition is overwritten by remove_cells()
         print(self.solved_board)
         self.s.remove_cells()
-        self.generated_board = self.s.get_board() #get the starting board configuration
-        for row in range(BOARD_ROWS):   #populate list of cell objects
-            for column in range(BOARD_COLS):
-                self.active_board.append(Cell(self.generated_board[row][column], row, column,self.screen))
+        self.active_board = self.s.get_board() #get the starting board configuration
+        print(self.active_board)
+        # for row in range(BOARD_ROWS):   #populate list of cell objects
+        #    for column in range(BOARD_COLS):
+        #        self.active_board.append(Cell(self.generated_board[row][column], row, column,self.screen))
                 # FIX ME: need to figure out what to put in "screen" attribute
-        return self.generated_board
+        return self.active_board
 
     def draw(self): # draws the grids for the game (Tom)
         # draw horizontal lines
