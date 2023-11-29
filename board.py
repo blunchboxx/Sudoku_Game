@@ -143,6 +143,8 @@ class Board:
         for rows in range(BOARD_ROWS):
             for cols in range(BOARD_COLS):
                 self.starting_cells[rows][cols].value = self.starting_board[rows][cols]
+                self.starting_cells[rows][cols].sketched_value = 0
+                self.starting_cells[rows][cols].sketched = False
 
     def is_full(self):
         # look for any 0 in cell.value

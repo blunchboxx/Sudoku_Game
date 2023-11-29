@@ -87,6 +87,16 @@ def draw_game_board(board):
     button_locations = game_buttons_draw()  # Draw reset, restart & exit buttons and save locations
     return button_locations
 
+def draw_select_box(row, col):
+    select_surf = pygame.Surface((SQUARE_SIZE - 10, SQUARE_SIZE - 10))
+    select_color = SELECTED_LINE_COLOR
+    select_rect = select_surf.get_rect(center=(col * SQUARE_SIZE + SQUARE_SIZE // 2,
+                                               row * SQUARE_SIZE + SQUARE_SIZE // 2))
+
+    pygame.draw.rect(screen, select_color, select_rect, width=2)
+
+    pygame.display.update()
+
 def game_buttons_draw():
     # Initialize button font
     game_button_font = pygame.font.Font(None, GAME_BUTTON_FONT)
@@ -184,16 +194,18 @@ if __name__ == '__main__':
                         cell_selected = True
 
                         selected_cell = sketched_board.select(location[0], location[1])
+                        draw_game_board(sketched_board)
+                        draw_select_box(selected_cell.row, selected_cell.col)
 
             if cell_selected is True and event.type == pygame.KEYDOWN:
                 if 49 <= event.key <= 57:
                     sketched_value = sketched_board.sketch(selected_cell, event.key)
+                    draw_game_board(sketched_board)
+                    draw_select_box(selected_cell.row, selected_cell.col)
                 elif event.key == 13:  # Sets cell value after pressing enter
-
-
-                    # FIXME and way to clear cell after entry and add new entry
                     sketched_board.place_number(selected_cell, sketched_value)
                     draw_game_board(sketched_board)
+                    draw_select_box(selected_cell.row, selected_cell.col)
 
 
             # ToDo add game over functions when ready
