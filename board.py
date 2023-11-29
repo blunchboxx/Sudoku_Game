@@ -63,9 +63,10 @@ class Board:
                     LINE_WIDTH
                 )
 
+    def draw_cell_numbers(self):
         for i in range(BOARD_COLS):
             for j in range(BOARD_ROWS):
-                self.starting_cells[i][j].draw(self.screen)
+                self.sketched_cells[i][j].draw(self.screen)
 
     def select(self, row, col): # used for marking the cell on the board at the selected cell (Tom)
         # FIXME need to add functions to draw red box on selected cell

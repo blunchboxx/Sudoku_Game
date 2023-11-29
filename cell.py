@@ -8,13 +8,18 @@ class Cell:
         self.col = col
         self.screen = screen
         self.sketched_value = 0 # initialized value for the player while determining a solution. (Tom)
-        self.selected = False # to help track if the cell has been selected yet (Tom)
+        self.selected = False  # to help track if the cell has been selected yet (Tom)
+
+        if self.value == 0:  # Determine if cell should be user editable
+            self.user_editable = True
+        else:
+            self.user_editable = False
 
     def set_cell_value(self, value):  # Setter for cell value
         self.value = value
 
     def set_sketched_value(self, key):  # Setter for cell's sketched value
-        value_font = pygame.font.Font(None, NUM_FONT)
+        value_font = pygame.font.Font(None, SKETCHED_VALUE_FONT)
 
         if key == 49:  # Reads ASCII key number and determines numeric value
             value = 1
@@ -57,8 +62,12 @@ class Cell:
 
         value_font = pygame.font.Font(None, NUM_FONT)  # Set font of number to be displayed
 
-        # Set surface for values to display value character in NUM_COLOR (black)
-        value_surf = value_font.render(str(self.value), 0, NUM_COLOR)
+        if self.user_editable is True:  # If cell is editable, use orange font
+            value_surf = value_font.render(str(self.value), 0, SKETCHED_VALUE_COLOR)
+
+        else:  # If cell is not editable, use black font
+            # Set surface for values to display value character in NUM_COLOR (black)
+            value_surf = value_font.render(str(self.value), 0, NUM_COLOR)
 
         # Set surface for empty squares to empty string and fill square with background color
         zero_surf = value_font.render('', 0, BG_COLOR)

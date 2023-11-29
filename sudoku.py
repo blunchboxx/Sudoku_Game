@@ -79,6 +79,14 @@ def draw_game_start():
 
         pygame.display.update()
 
+def draw_game_board(board):
+    screen.fill(BG_COLOR)
+
+    board.draw()  # Draw board on screen
+    board.draw_cell_numbers()
+    button_locations = game_buttons_draw()  # Draw reset, restart & exit buttons and save locations
+    return button_locations
+
 def game_buttons_draw():
     # Initialize button font
     game_button_font = pygame.font.Font(None, GAME_BUTTON_FONT)
@@ -129,14 +137,12 @@ if __name__ == '__main__':
     pygame.display.set_caption('Sudoku')
     difficulty = draw_game_start()
 
-    game_over = False
-    cell_selected = False
-
-    screen.fill(BG_COLOR)
     starting_board = Board(9, 9, screen, difficulty) # Initialize starting board
     sketched_board = starting_board  # Initialize board to be updated by player
-    sketched_board.draw()  # Draw board on screen
-    button_locations = game_buttons_draw()  # Draw reset, restart & exit buttons and save locations
+    button_locations = draw_game_board(sketched_board)
+
+    game_over = False
+    cell_selected = False
 
     while True:
         # event loop
@@ -155,10 +161,9 @@ if __name__ == '__main__':
                     if (location[0] > 8) or (location[1] > 8):  # If click location outside game board
                         if button_locations[0].collidepoint(event.pos):  # If click location is on reset button
 
+                            # FIXME broke reset button with update
                             sketched_board.reset_to_original()
-                            screen.fill(BG_COLOR)
-                            sketched_board.draw()
-                            game_buttons_draw()
+                            button_locations = draw_game_board(sketched_board)
 
                         elif button_locations[1].collidepoint(event.pos):  # If click location is on restart button
                             difficulty = draw_game_start()
@@ -169,8 +174,8 @@ if __name__ == '__main__':
                             screen.fill(BG_COLOR)
                             starting_board = Board(9, 9, screen, difficulty)  # Initialize starting board
                             sketched_board = starting_board  # Initialize board to be updated by player
-                            sketched_board.draw()  # Draw board on screen
-                            button_locations = game_buttons_draw()  # Draw reset, restart & exit buttons and save locations
+                            button_locations = draw_game_board(sketched_board)
+
                             break
                         elif button_locations[2].collidepoint(event.pos):  # If click is on exit button
                             pygame.quit()
@@ -188,9 +193,7 @@ if __name__ == '__main__':
                     # FIXME need to fix it so that sketched cells stay orange after subsequent entries
                     # FIXME need way to track player input cells vs original cells
                     # FIXME and way to clear cell after entry and add new entry
-                    screen.fill(BG_COLOR)
-                    sketched_board.draw()
-                    button_locations = game_buttons_draw()
+                    draw_game_board(sketched_board)
                     sketched_board.place_number(selected_cell, sketched_value)
 
             # ToDo add game over functions when ready
