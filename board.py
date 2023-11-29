@@ -14,7 +14,7 @@ class Board:
         self.selected_cell = None # used in select function (Tom)
         self.generated_board = SudokuGenerator(BOARD_ROWS, self.difficulty)  # Generate initial board
         self.generated_board.fill_values()  # Fill initial board with solution
-        self.solution_board = self.generated_board.get_board()  # Assign solved board to variable for end game comparison
+        self.solution_board = [row[:] for row in self.generated_board.get_board()]  # Assign solved board to variable for end game comparison
         self.generated_board.remove_cells()  # Remove required number of cells from initial board
         self.starting_board = self.generated_board.get_board()  # Assign initial board with removed cells to variable
         # Initializes starting board cells and assigns values
@@ -137,9 +137,10 @@ class Board:
 
     def is_full(self):
         #look for any 0 in cell.value
-        for cells in self.active_board:
-            if cells.value == 0:
-                return False
+        for rows in range(BOARD_ROWS):
+            for cols in range(BOARD_COLS):
+                if self.starting_cells[rows][cols].value == 0:
+                    return False
         return True
 
     def update_board(self): #Unsure what this method is supposed to be doing
@@ -147,15 +148,16 @@ class Board:
 
     def find_empty(self):
         #loop through cell.value and find the first 0 and return its coordinates
-        for cells in self.active_board:
-            if(cells.value == 0):
-                return (cells.row, cells.col)
+        for row in range(BOARD_ROWS):
+            for column in range(BOARD_COLS):
+                if(self.starting_cells[row][column] == 0):
+                    return (row, column)
+        #Do we want to return anything if there is no empty cells?
 
-    def check_board(self): #FIX ME: need to fine way to store "solved puzzle" for comparison purposes
+    def check_board(self):
         #loop through cell.value and compare to the "solution"
         for row in range(BOARD_ROWS):
             for column in range(BOARD_COLS):
-                for cells in self.active_board:
-                    if(cells.row == row and cells.col == column and cells.value != self.solved_board[row][column]):
-                        return False
+                if(self.starting_cells[row][column].value != self.solution_board[row][column]):
+                    return False
         return True
