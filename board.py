@@ -132,8 +132,12 @@ class Board:
         # But if main function limits placing number to after sketching, we already check for validity at sketching
 
     def reset_to_original(self):
-        self.sketched_cells = self.starting_cells  # Set player updated cells to equal starting cells
-        self.starting_board = self.generated_board  # Set player updated board equal to initial board
+        #self.sketched_cells = self.starting_cells  # Set player updated cells to equal starting cells
+        #self.starting_board = self.generated_board  # Set player updated board equal to initial board
+        for rows in range(BOARD_ROWS):
+            for cols in range(BOARD_COLS):
+                self.starting_cells[rows][cols].value = self.starting_board[rows][cols]
+
 
     def is_full(self):
         #look for any 0 in cell.value
