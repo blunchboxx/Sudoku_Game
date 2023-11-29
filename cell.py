@@ -37,7 +37,7 @@ class Cell:
             value = 7
         elif key == 56:
             value = 8
-        elif key == 58:
+        elif key == 57:
             value = 9
 
         value_surf = value_font.render(str(value), 0, SKETCHED_VALUE_COLOR)
