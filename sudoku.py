@@ -161,7 +161,6 @@ if __name__ == '__main__':
                     if (location[0] > 8) or (location[1] > 8):  # If click location outside game board
                         if button_locations[0].collidepoint(event.pos):  # If click location is on reset button
 
-                            # FIXME broke reset button with update
                             sketched_board.reset_to_original()
                             button_locations = draw_game_board(sketched_board)
 
@@ -190,11 +189,12 @@ if __name__ == '__main__':
                 if 49 <= event.key <= 57:
                     sketched_value = sketched_board.sketch(selected_cell, event.key)
                 elif event.key == 13:  # Sets cell value after pressing enter
-                    # FIXME need to fix it so that sketched cells stay orange after subsequent entries
-                    # FIXME need way to track player input cells vs original cells
+
+
                     # FIXME and way to clear cell after entry and add new entry
-                    draw_game_board(sketched_board)
                     sketched_board.place_number(selected_cell, sketched_value)
+                    draw_game_board(sketched_board)
+
 
             # ToDo add game over functions when ready
 
