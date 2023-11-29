@@ -84,11 +84,11 @@ def draw_game_board(board):
 
     board.draw()  # Draw board on screen
     board.draw_cell_numbers()
-    button_locations = game_buttons_draw()  # Draw reset, restart & exit buttons and save locations
-    return button_locations
+    location_of_buttons = game_buttons_draw()  # Draw reset, restart & exit buttons and save locations
+    return location_of_buttons
 
-def draw_select_box(row, col):
-    select_surf = pygame.Surface((SQUARE_SIZE - 10, SQUARE_SIZE - 10))
+def draw_select_box(row, col):  # Draw red rectangle on selected cell
+    select_surf = pygame.Surface((SQUARE_SIZE - 7.5, SQUARE_SIZE - 7.5))
     select_color = SELECTED_LINE_COLOR
     select_rect = select_surf.get_rect(center=(col * SQUARE_SIZE + SQUARE_SIZE // 2,
                                                row * SQUARE_SIZE + SQUARE_SIZE // 2))
@@ -134,6 +134,14 @@ def game_buttons_draw():
     screen.blit(exit_button_surf, exit_button_rect)
 
     return [reset_button_rect, restart_button_rect, exit_button_rect]
+
+def draw_game_over(board):  # TODO Tom, start here
+    if board.check_board():
+        # TODO add draw win screen functions here
+        pass
+    else:
+        # TODO add draw loss screen funcions here
+        pass
 
 if __name__ == '__main__':
 
@@ -207,14 +215,11 @@ if __name__ == '__main__':
                     draw_game_board(sketched_board)
                     draw_select_box(selected_cell.row, selected_cell.col)
 
-
-            # ToDo add game over functions when ready
-
-
-            if game_over:
-                pygame.display.update()
-                pygame.time.delay(1000)
-                draw_game_over()
+                    # TODO Tom, start here and with draw_game_over function above
+                    if sketched_board.is_full():  # After each new entry, check if board is full
+                        pygame.display.update()
+                        pygame.time.delay(1000)
+                        draw_game_over(sketched_board)  # If board is full, check if win or loss and display screen
 
             pygame.display.update()
 
