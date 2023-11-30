@@ -138,6 +138,7 @@ def game_buttons_draw():
 def draw_game_over(board):
     # if board.check_board():
     screen.fill(BG_COLOR) # create empty screen
+    start_bg_image = pygame.image.load(START_IMAGE_FILENAME)  # initialize sudoku image
     game_over_font = pygame.font.Font(None, START_TITLE_FONT) # initialize game over font
     game_button_font = pygame.font.Font(None, GAME_BUTTON_FONT) # initialize game button font
 
@@ -147,9 +148,8 @@ def draw_game_over(board):
         game_over_text = "Game Won!" # Game won text
 
         # initialize game over message
-        game_over_surf = game_over_font.render(game_over_text, 0, LINE_COLOR)
+        game_over_surf = game_over_font.render(game_over_text, 0, TITLE_COLOR)
         game_over_rect = game_over_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-        screen.blit(game_over_surf, game_over_rect)
 
         # initialize the exit button again
         exit_button_text = game_button_font.render('EXIT', 0, BUTTON_TEXT_COLOR)
@@ -158,6 +158,10 @@ def draw_game_over(board):
         exit_button_surf.fill(BUTTON_BOX_COLOR)
         exit_button_surf.blit(exit_button_text, (10, 10))
         exit_button_rect = exit_button_surf.get_rect(center=(WIDTH // 2, HEIGHT + 40))
+
+        # generate screen with image and message with exit button
+        screen.blit(start_bg_image, (0, 0))
+        screen.blit(game_over_surf, game_over_rect)
         screen.blit(exit_button_surf, exit_button_rect)
 
         return [game_over_rect, exit_button_rect]
@@ -167,9 +171,8 @@ def draw_game_over(board):
         game_over_text = "Game Over :(" # game over text
 
         # initialize game over message
-        game_over_surf = game_over_font.render(game_over_text, 0, LINE_COLOR)
+        game_over_surf = game_over_font.render(game_over_text, 0, TITLE_COLOR)
         game_over_rect = game_over_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-        screen.blit(game_over_surf, game_over_rect)
 
         # initialize the restart button again
         restart_button_text = game_button_font.render('RESTART', 0, BUTTON_TEXT_COLOR)
@@ -178,6 +181,10 @@ def draw_game_over(board):
         restart_button_surf.fill(BUTTON_BOX_COLOR)
         restart_button_surf.blit(restart_button_text, (10, 10))
         restart_button_rect = restart_button_surf.get_rect(center=(WIDTH // 2, HEIGHT + 40))
+
+        # generate screen with image and message with exit button
+        screen.blit(start_bg_image, (0, 0))
+        screen.blit(game_over_surf, game_over_rect)
         screen.blit(restart_button_surf, restart_button_rect)
 
         return [game_over_rect, restart_button_rect]
