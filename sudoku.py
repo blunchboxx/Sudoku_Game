@@ -205,6 +205,7 @@ if __name__ == '__main__':
     starting_board = Board(9, 9, screen, difficulty) # Initialize starting board
     sketched_board = starting_board  # Initialize board to be updated by player
     button_locations = draw_game_board(sketched_board)
+    arrow_keys = [pygame.K_DOWN, pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT]
 
     game_over = False
     cell_selected = False
@@ -260,6 +261,35 @@ if __name__ == '__main__':
                     sketched_board.place_number(selected_cell, sketched_value)
                     draw_game_board(sketched_board)
                     draw_select_box(selected_cell.row, selected_cell.col)
+                elif event.key in arrow_keys:
+                    if event.key == pygame.K_UP:
+                        if selected_cell.row == 0:
+                            continue
+                        else:
+                            selected_cell = sketched_board.select(selected_cell.row - 1, selected_cell.col)
+                            draw_game_board(sketched_board)
+                            draw_select_box(selected_cell.row, selected_cell.col)
+                    elif event.key == pygame.K_DOWN:
+                        if selected_cell.row == 8:
+                            continue
+                        else:
+                            selected_cell = sketched_board.select(selected_cell.row + 1, selected_cell.col)
+                            draw_game_board(sketched_board)
+                            draw_select_box(selected_cell.row, selected_cell.col)
+                    elif event.key == pygame.K_LEFT:
+                        if selected_cell.col == 0:
+                            continue
+                        else:
+                            selected_cell = sketched_board.select(selected_cell.row, selected_cell.col - 1)
+                            draw_game_board(sketched_board)
+                            draw_select_box(selected_cell.row, selected_cell.col)
+                    else:  # K_RIGHT
+                        if selected_cell.col == 8:
+                            continue
+                        else:
+                            selected_cell = sketched_board.select(selected_cell.row, selected_cell.col + 1)
+                            draw_game_board(sketched_board)
+                            draw_select_box(selected_cell.row, selected_cell.col)
 
 
                     if sketched_board.is_full(): # After each new entry, check if board is full
