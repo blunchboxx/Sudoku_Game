@@ -135,7 +135,7 @@ def game_buttons_draw():
 
     return [reset_button_rect, restart_button_rect, exit_button_rect]
 
-def draw_game_over(board):  # Tom, start here
+def draw_game_over(board):  # (Tom), start here
     # if board.check_board():
     screen.fill(BG_COLOR) # create empty screen
     game_over_font = pygame.font.Font(None, START_TITLE_FONT) # initialize game over font
