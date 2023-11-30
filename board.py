@@ -172,3 +172,7 @@ class Board:
                 if (self.starting_cells[row][column].value != self.solution_board[row][column]):
                     return False
         return True
+
+
+    def is_game_over(self): # using to play around with the game_over part of sudoku.py. Can be deleted if needed (Tom)
+        return self.is_full() and self.check_board()

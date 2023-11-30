@@ -135,13 +135,56 @@ def game_buttons_draw():
 
     return [reset_button_rect, restart_button_rect, exit_button_rect]
 
-def draw_game_over(board):  # TODO Tom, start here
-    if board.check_board():
-        # TODO add draw win screen functions here
-        pass
-    else:
-        # TODO add draw loss screen funcions here
-        pass
+def draw_game_over(board):  # Tom, start here
+    # if board.check_board():
+    screen.fill(BG_COLOR) # create empty screen
+    game_over_font = pygame.font.Font(None, START_TITLE_FONT) # initialize game over font
+    game_button_font = pygame.font.Font(None, GAME_BUTTON_FONT) # initialize game button font
+
+    if board.check_board(): # check the board for the solution being correct (return True)
+
+        # add draw win screen functions here. Need to have exit button
+        game_over_text = "Game Won!" # Game won text
+
+        # initialize game over message
+        game_over_surf = game_over_font.render(game_over_text, 0, LINE_COLOR)
+        game_over_rect = game_over_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        screen.blit(game_over_surf, game_over_rect)
+
+        # initialize the exit button again
+        exit_button_text = game_button_font.render('EXIT', 0, BUTTON_TEXT_COLOR)
+        exit_button_surf = pygame.Surface((exit_button_text.get_size()[0] + 20,
+                                           exit_button_text.get_size()[1] + 20))
+        exit_button_surf.fill(BUTTON_BOX_COLOR)
+        exit_button_surf.blit(exit_button_text, (10, 10))
+        exit_button_rect = exit_button_surf.get_rect(center=(WIDTH // 2 + 150, HEIGHT + 40))
+        screen.blit(exit_button_surf, exit_button_rect)
+
+        return [game_over_rect, exit_button_rect]
+
+    else: # if player was incorrect
+        # add draw loss screen funcions here. Need to add Restart button
+        game_over_text = "Game Over :(" # game over text
+
+        # initialize game over message
+        game_over_surf = game_over_font.render(game_over_text, 0, LINE_COLOR)
+        game_over_rect = game_over_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        screen.blit(game_over_surf, game_over_rect)
+
+        # initialize the restart button again
+        restart_button_text = game_button_font.render('RESTART', 0, BUTTON_TEXT_COLOR)
+        restart_button_surf = pygame.Surface((restart_button_text.get_size()[0] + 20,
+                                              restart_button_text.get_size()[1] + 20))
+        restart_button_surf.fill(BUTTON_BOX_COLOR)
+        restart_button_surf.blit(restart_button_text, (10, 10))
+        restart_button_rect = restart_button_surf.get_rect(center=(WIDTH // 2, HEIGHT + 40))
+        screen.blit(restart_button_surf, restart_button_rect)
+
+        return [game_over_rect, restart_button_rect]
+
+
+
+
 
 if __name__ == '__main__':
 
@@ -216,10 +259,11 @@ if __name__ == '__main__':
                     draw_select_box(selected_cell.row, selected_cell.col)
 
                     # TODO Tom, start here and with draw_game_over function above
-                    if sketched_board.is_full():  # After each new entry, check if board is full
-                        pygame.display.update()
-                        pygame.time.delay(1000)
-                        draw_game_over(sketched_board)  # If board is full, check if win or loss and display screen
+                    if sketched_board.is_full(): # After each new entry, check if board is full
+                        if sketched_board.check_board():
+                            pygame.display.update()
+                            pygame.time.delay(1000)
+                            draw_game_over(sketched_board)  # If board is full, check if win or loss and display screen
 
             pygame.display.update()
 
