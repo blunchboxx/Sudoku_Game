@@ -83,16 +83,16 @@ class Cell:
             if self.sketched_value > 0:  # If cell has a non-zero value, display it in the board
                 sketched_value_surf = sketched_value_font.render(str(self.sketched_value), 0, SKETCHED_VALUE_COLOR)
 
-                value_rect = sketched_value_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
-                                                                  self.row * SQUARE_SIZE + SQUARE_SIZE // 2))
+                value_rect = sketched_value_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 4,
+                                                                  self.row * SQUARE_SIZE + SQUARE_SIZE // 3))
 
                 screen.blit(sketched_value_surf, value_rect)
 
         else:
             sketched_value_surf = sketched_value_font.render('', 0, SKETCHED_VALUE_COLOR)
 
-            value_rect = sketched_value_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
-                                                              self.row * SQUARE_SIZE + SQUARE_SIZE // 2))
+            value_rect = sketched_value_surf.get_rect(center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 4,
+                                                              self.row * SQUARE_SIZE + SQUARE_SIZE // 3))
 
             screen.blit(sketched_value_surf, value_rect)
 
