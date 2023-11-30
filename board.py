@@ -94,14 +94,10 @@ class Board:
 
         # self.cell = (x, y) # temporary attribute (corey 11/22) - removed/edited (Tom)
 
-    def clear(self):
-        # check if cell was filled in at game start
-        if self.generated_board[self.selected_cell[0]][self.selected_cell[1]] != 0:
-            print("Cannot clear cell")
-        else:  # update cell object at selected cell (object with matching row and column)
-            for cells in self.active_board:
-                if (cells.row == self.selected_cell[0] and cells.col == self.selected_cell[1]):
-                    cells.set_cell_value(0)
+    def clear(self, cell):
+        if cell.user_editable is True:
+            cell.set_cell_value(0)
+            cell.enter_value(cell.value)
 
     '''
     Added function to check if selected cell is editable.

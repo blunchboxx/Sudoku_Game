@@ -271,5 +271,9 @@ if __name__ == '__main__':
                         pygame.display.update() # will update
                         pygame.time.delay(1000) # wait one second
                         draw_game_over(sketched_board)  # displays winner or loser messages depending on check function
+                elif event.key == 8 or event.key == 127: #if user presses backspace or delete
+                    sketched_board.clear(selected_cell)
+                    draw_game_board(sketched_board)
+                    draw_select_box(selected_cell.row, selected_cell.col)
 
                 pygame.display.update()
