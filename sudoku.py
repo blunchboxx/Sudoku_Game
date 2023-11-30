@@ -167,7 +167,7 @@ def draw_game_over(board):
         return [game_over_rect, exit_button_rect]
 
     else: # if player was incorrect
-        # add draw loss screen funcions here. Need to add Restart button
+        # add draw loss screen functions here. Need to add Restart button
         game_over_text = "Game Over :(" # game over text
 
         # initialize game over message
@@ -188,9 +188,6 @@ def draw_game_over(board):
         screen.blit(restart_button_surf, restart_button_rect)
 
         return [game_over_rect, restart_button_rect]
-
-
-
 
 
 if __name__ == '__main__':
@@ -221,7 +218,6 @@ if __name__ == '__main__':
 
             if event.type == pygame.MOUSEBUTTONDOWN and not game_over:  # Check for mouse click
                 x, y = event.pos  # Store mouse click location as x & y coordinates
-                print(x, y)
                 location = sketched_board.click(x, y)  # Pass click location to Board class 'click' function
 
                 if location is not None:
