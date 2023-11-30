@@ -1,7 +1,7 @@
-from constants import *
-import pygame, sys
-from sudoku_generator import SudokuGenerator
+import pygame
 from cell import Cell
+from constants import *
+from sudoku_generator import SudokuGenerator
 
 
 # screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -15,20 +15,18 @@ class Board:
         self.selected_cell = None  # used in select function (Tom)
         self.generated_board = SudokuGenerator(BOARD_ROWS, self.difficulty)  # Generate initial board
         self.generated_board.fill_values()  # Fill initial board with solution
-        self.solution_board = [row[:] for row in
-                               self.generated_board.get_board()]  # Assign solved board to variable for end game comparison
+        self.solution_board = [row[:] for row in self.generated_board.get_board()]  # Assign solved board to variable
         self.generated_board.remove_cells()  # Remove required number of cells from initial board
         self.starting_board = self.generated_board.get_board()  # Assign initial board with removed cells to variable
         # Initializes starting board cells and assigns values
-        self.starting_cells = [
-            [Cell(self.starting_board[i][j], i, j, self.screen) for j in range(BOARD_COLS)]
-            for i in range(BOARD_ROWS)
-        ]
+        self.starting_cells = [[Cell(self.starting_board[i][j], i, j, self.screen) for j in range(BOARD_COLS)] for i in
+                               range(BOARD_ROWS)]
         # self.sketched_cells = self.starting_cells  # Added to track game cells as they are updated by player
 
-    def draw(self):  # draws the grids for the game (Tom)
+    # draws the grids for the game (Tom)
+    def draw(self):
         # draw horizontal lines
-        for i in range(0, BOARD_ROWS + 1):  # allows a line to be drawn to outline the board (Tom)
+        for i in range(0, BOARD_ROWS + 1):
             if i % 3 == 0:
                 pygame.draw.line(
                     self.screen,
@@ -36,16 +34,14 @@ class Board:
                     (0, i * SQUARE_SIZE),
                     (WIDTH, i * SQUARE_SIZE),
                     # Made the WIDTH divisible by 9 (693) under constants for a nicer looking board
-                    BORDER_LINE_WIDTH
-                )
+                    BORDER_LINE_WIDTH)
             else:
                 pygame.draw.line(
                     self.screen,
                     LINE_COLOR,
                     (0, i * SQUARE_SIZE),
                     (WIDTH, i * SQUARE_SIZE),
-                    LINE_WIDTH
-                )
+                    LINE_WIDTH)
         # draw vertical lines
         for i in range(0, BOARD_COLS + 1):
             if i % 3 == 0:
@@ -55,8 +51,7 @@ class Board:
                     (i * SQUARE_SIZE, 0),
                     (i * SQUARE_SIZE, HEIGHT),
                     # Made the HEIGHT divisible by 9 (693) under constants for a nicer looking board
-                    BORDER_LINE_WIDTH
-                )
+                    BORDER_LINE_WIDTH)
             else:
                 pygame.draw.line(
                     self.screen,
@@ -64,34 +59,33 @@ class Board:
                     (i * SQUARE_SIZE, 0),
                     (i * SQUARE_SIZE, HEIGHT),
                     # Made the HEIGHT divisible by 9 (693) under constants for a nicer looking board
-                    LINE_WIDTH
-                )
+                    LINE_WIDTH)
 
     def draw_cell_numbers(self):
         for i in range(BOARD_COLS):
             for j in range(BOARD_ROWS):
                 self.starting_cells[i][j].draw(self.screen)
 
-    def select(self, row, col):  # used for marking the cell on the board at the selected cell (Tom)
-        # FIXME need to add functions to draw red box on selected cell
+    # used for marking the cell on the board at the selected cell (Tom)
+    def select(self, row, col):
+
         return self.starting_cells[row][col]
 
-    def click(self, x, y):  # finding the row and column of the board (Tom)
-        row = y // SQUARE_SIZE  # instead of a value from 0 - 693, it gives you 0-9
-        col = x // SQUARE_SIZE  # instead of a value from 0 - 693, it gives you 0-9
-
-        if 0 <= row < BOARD_ROWS and 0 <= col < BOARD_ROWS:  # if the value is within the board paramenters
+    # finding the row and column of the board (Tom)
+    def click(self, x, y):
+        # instead of a value from 0 to 693, both give you 0-9
+        row = y // SQUARE_SIZE
+        col = x // SQUARE_SIZE
+        if 0 <= row < BOARD_ROWS and 0 <= col < BOARD_ROWS:
             pygame.display.update()
             return tuple([row, col])  # returns the coordinates
         # Check if location of click is in button area
         elif (0 <= x <= WIDTH - 10) and (HEIGHT <= y <= HEIGHT + 80):
             location = (x, y)
-
             pygame.display.update()
             return location  # Return button area click location to check which button was clicked
         else:  # if outside the values
             return None  # returns None
-
         # self.cell = (x, y) # temporary attribute (corey 11/22) - removed/edited (Tom)
 
     def clear(self, cell):
@@ -110,7 +104,8 @@ class Board:
         else:
             return False
 
-    def sketch(self, cell, value):  # Updated sketch function to see if it works - Jason
+    # Updated sketch function to see if it works - Jason
+    def sketch(self, cell, value):
         if self.editable_cell(cell.row, cell.col):
             sketched_value = cell.set_sketched_value(value)
             return sketched_value
@@ -121,7 +116,8 @@ class Board:
                 cells.set_sketched_value(value)
         '''
 
-    def place_number(self, cell, value):  # Updated to call cell new cell.enter_value function - Jason\
+    # Updated to call cell new cell.enter_value function - Jason
+    def place_number(self, cell, value):
         if cell.sketched is True:
             cell.set_cell_value(cell.sketched_value)
             cell.enter_value(cell.value)
@@ -157,18 +153,18 @@ class Board:
         # loop through cell.value and find the first 0 and return its coordinates
         for row in range(BOARD_ROWS):
             for column in range(BOARD_COLS):
-                if (self.starting_cells[row][column] == 0):
-                    return (row, column)
+                if self.starting_cells[row][column] == 0:
+                    return row, column
         # Do we want to return anything if there is no empty cells?
 
     def check_board(self):
         # loop through cell.value and compare to the "solution"
         for row in range(BOARD_ROWS):
             for column in range(BOARD_COLS):
-                if (self.starting_cells[row][column].value != self.solution_board[row][column]):
+                if self.starting_cells[row][column].value != self.solution_board[row][column]:
                     return False
         return True
 
-
-    def is_game_over(self): # using to play around with the game_over part of sudoku.py. Can be deleted if needed (Tom)
+    # using to play around with the game_over part of sudoku.py. Can be deleted if needed (Tom)
+    def is_game_over(self):
         return self.is_full() and self.check_board()
