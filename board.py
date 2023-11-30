@@ -24,7 +24,7 @@ class Board:
             [Cell(self.starting_board[i][j], i, j, self.screen) for j in range(BOARD_COLS)]
             for i in range(BOARD_ROWS)
         ]
-        self.sketched_cells = self.starting_cells  # Added to track game cells as they are updated by player
+        # self.sketched_cells = self.starting_cells  # Added to track game cells as they are updated by player
 
     def draw(self):  # draws the grids for the game (Tom)
         # draw horizontal lines
@@ -70,11 +70,11 @@ class Board:
     def draw_cell_numbers(self):
         for i in range(BOARD_COLS):
             for j in range(BOARD_ROWS):
-                self.sketched_cells[i][j].draw(self.screen)
+                self.starting_cells[i][j].draw(self.screen)
 
     def select(self, row, col):  # used for marking the cell on the board at the selected cell (Tom)
         # FIXME need to add functions to draw red box on selected cell
-        return self.sketched_cells[row][col]
+        return self.starting_cells[row][col]
 
     def click(self, x, y):  # finding the row and column of the board (Tom)
         row = y // SQUARE_SIZE  # instead of a value from 0 - 693, it gives you 0-9
