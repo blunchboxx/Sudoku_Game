@@ -157,7 +157,7 @@ def draw_game_over(board):  # (Tom), start here
                                            exit_button_text.get_size()[1] + 20))
         exit_button_surf.fill(BUTTON_BOX_COLOR)
         exit_button_surf.blit(exit_button_text, (10, 10))
-        exit_button_rect = exit_button_surf.get_rect(center=(WIDTH // 2 + 150, HEIGHT + 40))
+        exit_button_rect = exit_button_surf.get_rect(center=(WIDTH // 2, HEIGHT + 40))
         screen.blit(exit_button_surf, exit_button_rect)
 
         return [game_over_rect, exit_button_rect]
@@ -258,13 +258,13 @@ if __name__ == '__main__':
                     draw_game_board(sketched_board)
                     draw_select_box(selected_cell.row, selected_cell.col)
 
-                    # TODO Tom, start here and with draw_game_over function above
+                # TODO Tom, start here and with draw_game_over function above
                     if sketched_board.is_full(): # After each new entry, check if board is full
-                        if sketched_board.check_board():
-                            pygame.display.update()
-                            pygame.time.delay(1000)
-                            draw_game_over(sketched_board)  # If board is full, check if win or loss and display screen
+                        sketched_board.check_board()
+                        pygame.display.update()
+                        pygame.time.delay(1000)
+                        draw_game_over(sketched_board)  # If board is full, check if win or loss and display screen
 
-            pygame.display.update()
+                pygame.display.update()
 
     # game_over_font = pygame.font.Font(None, GAME_OVER_FONT)  # Set up end message font
