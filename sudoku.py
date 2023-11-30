@@ -135,7 +135,7 @@ def game_buttons_draw():
 
     return [reset_button_rect, restart_button_rect, exit_button_rect]
 
-def draw_game_over(board):  # (Tom), start here
+def draw_game_over(board):
     # if board.check_board():
     screen.fill(BG_COLOR) # create empty screen
     game_over_font = pygame.font.Font(None, START_TITLE_FONT) # initialize game over font
@@ -258,13 +258,11 @@ if __name__ == '__main__':
                     draw_game_board(sketched_board)
                     draw_select_box(selected_cell.row, selected_cell.col)
 
-                # TODO Tom, start here and with draw_game_over function above
+
                     if sketched_board.is_full(): # After each new entry, check if board is full
-                        sketched_board.check_board()
-                        pygame.display.update()
-                        pygame.time.delay(1000)
-                        draw_game_over(sketched_board)  # If board is full, check if win or loss and display screen
+                        sketched_board.check_board() # checks if board is correct or incorrect
+                        pygame.display.update() # will update
+                        pygame.time.delay(1000) # wait one second
+                        draw_game_over(sketched_board)  # displays winner or loser messages depending on check function
 
                 pygame.display.update()
-
-    # game_over_font = pygame.font.Font(None, GAME_OVER_FONT)  # Set up end message font
