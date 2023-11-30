@@ -4,7 +4,6 @@ import random
 """
 This was adapted from a GeeksforGeeks article "Program for Sudoku Generator" by Aarti_Rathi and Ankur Trisal
 https://www.geeksforgeeks.org/program-sudoku-generator/
-
 """
 
 
@@ -12,14 +11,14 @@ class SudokuGenerator:
     """
     Create a sudoku board - initialize class variables and set up the 2D board
     This should initialize:
-    self.row_length		- the length of each row
-    self.removed_cells	- the total number of cells to be removed
-    self.board			- a 2D list of ints to represent the board
-    self.box_length		- the square root of row_length
+    self.row_length		- the length of each row (int)
+    self.removed_cells	- the total number of cells to be removed (int)
+    self.board			- a 2D list of ints to represent the board (list[list])
+    self.box_length		- the square root of row_length (int)
 
     Parameters:
-    row_length is the number of rows/columns of the board (always 9 for this project)
-    removed_cells is an integer value - the number of cells to be removed
+    row_length is the number of rows/columns of the board; 9 for this project (int)
+    removed_cells is the number of cells to be removed (int)
 
     Return:
     None
@@ -29,7 +28,7 @@ class SudokuGenerator:
         self.row_length = row_length
         self.removed_cells = removed_cells
         self.box_length = int(math.sqrt(self.row_length))
-        self.board = []          # LINES 31-34 NEW 11/15/23 - Corey Cavalli
+        self.board = []  # LINES 31-34 NEW 11/15/23 - Corey Cavalli
         for row in range(9):
             self.board.append([])
             for column in range(9):
@@ -54,45 +53,41 @@ class SudokuGenerator:
     '''
 
     def print_board(self):
-
         for i in range(0, len(self.board)):
             print(f'{self.board[i]}\n')
 
     '''
-    Determines if num is contained in the specified row (horizontal) of the board
-    If num is already in the specified row, return False. Otherwise, return True
+    Determines if num is contained in the specified row of the board
+    If num is already in the row, return False. Otherwise, return True
 
     Parameters:
     row is the index of the row we are checking
     num is the value we are looking for in the row
-    
-    Return: boolean
+
+    Return: Boolean
     '''
 
     def valid_in_row(self, row, num):
-
         if num in self.board[row]:
             return False
         else:
             return True
 
     '''
-    Determines if num is contained in the specified column (vertical) of the board
-    If num is already in the specified col, return False. Otherwise, return True
+    Determines if num is contained in the specified column of the board
+    If num is already in the specified column, return False. Otherwise, return True
 
     Parameters:
     col is the index of the column we are checking
     num is the value we are looking for in the column
-    
-    Return: boolean
+
+    Return: Boolean
     '''
 
     def valid_in_col(self, col, num):
-
         for i in range(0, self.row_length):
             if num == self.board[i][col]:
                 return False
-
         return True
 
     '''
@@ -105,60 +100,54 @@ class SudokuGenerator:
     i.e. the box is from (row_start, col_start) to (row_start+2, col_start+2)
     num is the value we are looking for in the box
 
-    Return: boolean
+    Return: Boolean
     '''
 
     def valid_in_box(self, row_start, col_start, num):
-
         for row in range(row_start, row_start + self.box_length):
             for col in range(col_start, col_start + self.box_length):
                 if num == self.board[row][col]:
                     return False
-
         return True
 
     '''
     Determines if it is valid to enter num at (row, col) in the board
-    This is done by checking that num is unused in the appropriate, row, column, and box
+    This is done by checking that num is unused in the corresponding row, column, and box
 
     Parameters:
-    row and col are the row index and col index of the cell to check in the board
-    num is the value to test if it is safe to enter in this cell
+    row and col are the row and col indices of the cell to check in the board
+    num is the value to check if it may be entered in this cell
 
-    Return: boolean
+    Return: Boolean
     '''
 
     def is_valid(self, row, col, num):
-
         # Determine Row Start value
         if row < 3:
             row_start = 0
-
         elif 3 <= row < 6:
             row_start = 3
-
         elif 6 <= row < 10:
             row_start = 6
-
+        else:
+            row_start = None
         # Determine Col Start Value
         if col < 3:
             col_start = 0
-
         elif 3 <= col < 6:
             col_start = 3
-
         elif 6 <= col < 10:
             col_start = 6
-
+        else:
+            col_start = None
         # Call other valid_in functions and return True if all are True
         if (self.valid_in_row(row, num) == self.valid_in_col(col, num) ==
                 self.valid_in_box(row_start, col_start, num) is True):
             return True
-
         return False
 
     '''
-    Determines if value has been used in box yet during initial board generation'
+    Determines if the specified value has been used in the box during initial board generation
 
     Parameters:
     row_start and col_start are the indices of the box we are checking
@@ -168,16 +157,10 @@ class SudokuGenerator:
     '''
 
     def unused_in_box(self, row_start, col_start, value):
-
-        """
-        Checks if value passed by fill_box function has been used in the box yet.
-        Checks box based on starting row and column values.
-        """
         for row in range(row_start, row_start + self.box_length):
             for col in range(col_start, col_start + self.box_length):
                 if self.board[row][col] == value:
                     return False
-
         return True
 
     '''
@@ -192,19 +175,11 @@ class SudokuGenerator:
     '''
 
     def fill_box(self, row_start, col_start):
-
-        """
-        Generates random value and checks if it has been used in box yet.
-        If not used yet, square in box is assigned value and next value is generated and checked.
-        If already used in box, another random value is generated until an unused value is found.
-        """
         for row in range(row_start, row_start + self.box_length):
             for col in range(col_start, col_start + self.box_length):
                 next_value = random.randint(1, 9)
-
                 while self.unused_in_box(row_start, col_start, next_value) is False:
                     next_value = random.randint(1, 9)
-
                 self.board[row][col] = next_value
 
     '''
@@ -225,7 +200,7 @@ class SudokuGenerator:
     Provided for students
     Fills the remaining cells of the board
     Should be called after the diagonal boxes have been filled
-    
+
     Parameters:
     row, col specify the coordinates of the first empty (0) cell
 
@@ -278,23 +253,16 @@ class SudokuGenerator:
     This is done by setting some values to 0
     Should be called after the entire solution has been constructed
     i.e. after fill_values has been called
-    
-    NOTE: Be careful not to 'remove' the same cell multiple times
-    i.e. if a cell is already 0, it cannot be removed again
 
     Parameters: None
     Return: None
     '''
 
     def remove_cells(self):
-
         removed_count = 0
-
         while removed_count < self.removed_cells:
-
             rand_col = random.randint(0, 8)
             rand_row = random.randint(0, 8)
-
             if self.board[rand_row][rand_col] != 0:  # Checks if cell has already been removed.
                 self.board[rand_row][rand_col] = 0
                 removed_count += 1  # Only increment removed count if cell can be removed i.e. was not removed before
