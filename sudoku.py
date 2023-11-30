@@ -266,6 +266,14 @@ if __name__ == '__main__':
                     draw_game_board(sketched_board)
                     draw_select_box(selected_cell.row, selected_cell.col)
 
+                    if sketched_board.is_full(): # After each new entry, check if board is full
+                        sketched_board.check_board() # checks if board is correct or incorrect
+                        pygame.display.update() # will update
+                        pygame.time.delay(3000) # wait three second
+                        draw_game_over(sketched_board)  # displays winner or loser messages depending on check function
+
+
+
                 # Checks if pressed key was an arrow key. Allows arrow keys to change highlighted cell
                 elif event.key in arrow_keys:
                     if event.key == pygame.K_UP:  # UP ARROW function
@@ -306,9 +314,12 @@ if __name__ == '__main__':
                         pygame.display.update() # will update
                         pygame.time.delay(1000) # wait one second
                         draw_game_over(sketched_board)  # displays winner or loser messages depending on check function
+
                 elif event.key == 8 or event.key == 127: #if user presses backspace or delete
                     sketched_board.clear(selected_cell)
                     draw_game_board(sketched_board)
                     draw_select_box(selected_cell.row, selected_cell.col)
+
+
 
                 pygame.display.update()
