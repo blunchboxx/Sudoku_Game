@@ -204,8 +204,8 @@ if __name__ == '__main__':
 
     starting_board = Board(9, 9, screen, difficulty) # Initialize starting board
     sketched_board = starting_board  # Initialize board to be updated by player
-    button_locations = draw_game_board(sketched_board)
-    arrow_keys = [pygame.K_DOWN, pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT]
+    button_locations = draw_game_board(sketched_board)  # Initializes location of game buttons
+    arrow_keys = [pygame.K_DOWN, pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT]  # Sets up arrow key list
 
     game_over = False
     cell_selected = False
@@ -252,45 +252,54 @@ if __name__ == '__main__':
                         draw_game_board(sketched_board)
                         draw_select_box(selected_cell.row, selected_cell.col)
 
+            # Checks for value entries and arrow key presses after a cell has been selected
             if cell_selected is True and event.type == pygame.KEYDOWN:
+                # Sets cell's sketched value after num keys 1 - 9 are pressed
                 if 49 <= event.key <= 57:
                     sketched_value = sketched_board.sketch(selected_cell, event.key)
                     draw_game_board(sketched_board)
                     draw_select_box(selected_cell.row, selected_cell.col)
-                elif event.key == 13:  # Sets cell value after pressing enter
+
+                # Sets cell value after pressing enter
+                elif event.key == 13:
                     sketched_board.place_number(selected_cell, sketched_value)
                     draw_game_board(sketched_board)
                     draw_select_box(selected_cell.row, selected_cell.col)
+
+                # Checks if pressed key was an arrow key. Allows arrow keys to change highlighted cell
                 elif event.key in arrow_keys:
-                    if event.key == pygame.K_UP:
-                        if selected_cell.row == 0:
+                    if event.key == pygame.K_UP:  # UP ARROW function
+                        if selected_cell.row == 0:  # Do nothing if already at top of board
                             continue
                         else:
+                            # If not at top of board, decrement selected cell row by 1 and update screen
                             selected_cell = sketched_board.select(selected_cell.row - 1, selected_cell.col)
                             draw_game_board(sketched_board)
                             draw_select_box(selected_cell.row, selected_cell.col)
-                    elif event.key == pygame.K_DOWN:
-                        if selected_cell.row == 8:
+                    elif event.key == pygame.K_DOWN:  # DOWN ARROW function
+                        if selected_cell.row == 8:  # Do nothing if already at bottom of board
                             continue
                         else:
+                            # If not at bottom of board, increment selected cell row by 1 and update screen
                             selected_cell = sketched_board.select(selected_cell.row + 1, selected_cell.col)
                             draw_game_board(sketched_board)
                             draw_select_box(selected_cell.row, selected_cell.col)
-                    elif event.key == pygame.K_LEFT:
-                        if selected_cell.col == 0:
+                    elif event.key == pygame.K_LEFT:  # LEFT ARROW functions
+                        if selected_cell.col == 0:  # Do nothing if already at left of board
                             continue
                         else:
+                            # If not at left of board, decrement selected cell col by 1 and update screen
                             selected_cell = sketched_board.select(selected_cell.row, selected_cell.col - 1)
                             draw_game_board(sketched_board)
                             draw_select_box(selected_cell.row, selected_cell.col)
-                    else:  # K_RIGHT
-                        if selected_cell.col == 8:
+                    else:  # RIGHT ARROW functionality
+                        if selected_cell.col == 8:  # Do nothing if already at right of board
                             continue
                         else:
+                            # If not at right of board, increment selected cell col by 1 and update screen
                             selected_cell = sketched_board.select(selected_cell.row, selected_cell.col + 1)
                             draw_game_board(sketched_board)
                             draw_select_box(selected_cell.row, selected_cell.col)
-
 
                     if sketched_board.is_full(): # After each new entry, check if board is full
                         sketched_board.check_board() # checks if board is correct or incorrect
