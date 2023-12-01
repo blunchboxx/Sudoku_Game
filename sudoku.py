@@ -64,22 +64,22 @@ def draw_game_start():
     screen.blit(med_button_surf, med_button_rect)
     screen.blit(hard_button_surf, hard_button_rect)
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:  # If user clicks 'X' button, quit game
+    while True:  # Run until user selects difficulty and starts game
+        for user_event in pygame.event.get():
+            if user_event.type == pygame.QUIT:  # If user clicks 'X' button, quit game
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:  # Check for user mouse click
-                if easy_button_rect.collidepoint(event.pos):  # Checks if user click is on easy button
+            if user_event.type == pygame.MOUSEBUTTONDOWN:  # Check for user mouse click
+                if easy_button_rect.collidepoint(user_event.pos):  # Checks if user click is on easy button
                     return 30  # If mouse clicks on easy button, return 30 cells to remove
-                elif med_button_rect.collidepoint(event.pos):  # If mouse clicks on medium
+                elif med_button_rect.collidepoint(user_event.pos):  # If mouse clicks on medium
                     return 40  # Return to main() and return value of 40 cells to remove
-                elif hard_button_rect.collidepoint(event.pos):  # If mouse clicks on hard
+                elif hard_button_rect.collidepoint(user_event.pos):  # If mouse clicks on hard
                     return 50  # Return to main() and return value of 50 cells to remove
 
         pygame.display.update()
 
-def draw_game_board(board):
+def draw_game_board(board):  # Draw game board and button locations
     screen.fill(BG_COLOR)
 
     board.draw()  # Draw board on screen
@@ -201,10 +201,12 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode((WIDTH, HEIGHT + 80))
     pygame.display.set_caption('Sudoku')
     difficulty = draw_game_start()
+    pygame.display.update()
 
     starting_board = Board(9, 9, screen, difficulty) # Initialize starting board
     sketched_board = starting_board  # Initialize board to be updated by player
     button_locations = draw_game_board(sketched_board)  # Initializes location of game buttons
+    pygame.display.update()
     arrow_keys = [pygame.K_DOWN, pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT]  # Sets up arrow key list
 
     game_over = False
@@ -228,6 +230,7 @@ if __name__ == '__main__':
 
                             sketched_board.reset_to_original()
                             button_locations = draw_game_board(sketched_board)
+                            pygame.display.update()
 
                         elif button_locations[1].collidepoint(event.pos):  # If click location is on restart button
                             difficulty = draw_game_start()
@@ -239,7 +242,7 @@ if __name__ == '__main__':
                             starting_board = Board(9, 9, screen, difficulty)  # Initialize starting board
                             sketched_board = starting_board  # Initialize board to be updated by player
                             button_locations = draw_game_board(sketched_board)
-
+                            pygame.display.update()
                             break
                         elif button_locations[2].collidepoint(event.pos):  # If click is on exit button
                             pygame.quit()
