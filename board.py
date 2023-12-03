@@ -16,7 +16,6 @@ class Board:
         self.generated_board = SudokuGenerator(BOARD_ROWS, self.difficulty)  # Generate initial board
         self.generated_board.fill_values()  # Fill initial board with solution
         self.solution_board = [row[:] for row in self.generated_board.get_board()]  # Assign solved board to variable
-        print(self.solution_board)  # Prints solution for demo recording
         self.generated_board.remove_cells()  # Remove required number of cells from initial board
         self.starting_board = self.generated_board.get_board()  # Assign initial board with removed cells to variable
         # Initializes starting board cells and assigns values
